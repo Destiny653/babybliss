@@ -3,17 +3,31 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import toast from 'react-hot-toast';
+import { basicUrl } from '../url';
 
 export default function Footer() {
   const [formData, setFormData] = useState({
     email: '',
-    subject: '',
+    title: '',
     message: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Here you would typically send the data to your backend
+    const res = await fetch(`${basicUrl}/api/client/message`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+  })
+  const req = await res.json()
+  if (!res.ok) { 
+      toast.error(req.message)
+      e.target.reset();
+
+      return
+  }  
     console.log('Form submitted:', formData);
     toast.success('Message sent successfully!');
     setFormData({ email: '', subject: '', message: '' });
@@ -33,13 +47,13 @@ export default function Footer() {
           {/* Company Info */}
           <div>
             <h3 className="mb-4 font-semibold text-gray-900 text-lg">
-              BabyShop
+              BabyBliss
             </h3>
             <p className="mb-4 text-gray-600">
               Your one-stop shop for all baby essentials.
             </p>
             <div className="space-y-2">
-              <p className="text-gray-600">Email: contact@babyshop.com</p>
+              <p className="text-gray-600">Email: contact@babybliss.com</p>
               <p className="text-gray-600">Phone: (555) 123-4567</p>
             </div>
           </div>
@@ -76,7 +90,7 @@ export default function Footer() {
           {/* Contact Form */}
           <div>
             <h3 className="mb-4 font-semibold text-gray-900 text-lg">
-              Send us a message
+              Send Us a Message
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -89,17 +103,19 @@ export default function Footer() {
                   className="border-gray-300 px-3 py-2 border rounded-md focus:ring-1 focus:ring-pink-500 w-full focus:outline-none"
                   required
                 />
-              </div>
+              </div> 
               <div>
-                <input
-                  type="text"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  placeholder="Subject"
-                  className="border-gray-300 px-3 py-2 border rounded-md focus:ring-1 focus:ring-pink-500 w-full focus:outline-none"
-                  required
-                />
+                <select className="border-gray-300 px-3 py-2 border rounded-md focus:ring-1 focus:ring-pink-500 w-full focus:outline-none"
+                   name="title"
+                   value={formData.title}
+                   onChange={handleChange} 
+                >
+                  <option value="">Select Subject</option>
+                  <option value="feedback">Feedback</option>
+                  <option value="suggestion">Suggestion</option>
+                  <option value="question">Question</option>
+                  <option value="complaint">Complaint</option>
+                </select>
               </div>
               <div>
                 <textarea

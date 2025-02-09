@@ -1,23 +1,24 @@
 // app/contact/page.js
 'use client';
 import { useState } from 'react';
-import { 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
   Send,
   Facebook,
   Instagram,
   Twitter
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { basicUrl } from '../components/url';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
-    name: '',
+    phone: '',
     email: '',
-    subject: '',
+    title: '',
     message: '',
   });
   const [loading, setLoading] = useState(false);
@@ -36,17 +37,29 @@ export default function ContactPage() {
 
     try {
       // This would be your actual API call
-      // Simulating API call with timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      // Simulating API call with timeout 
+      const res = await fetch(` ${basicUrl}/api/client/message`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      const req = await res.json()
+      if (!res.ok) {
+        toast.error(req.message)
+        // e.target.reset();
+        return;
+      }
+
       // Reset form
       setFormData({
-        name: '',
+        phone: '',
         email: '',
-        subject: '',
+        title: '',
         message: '',
       });
-      
+
       toast.success('Message sent successfully!');
     } catch (error) {
       toast.error('Failed to send message. Please try again.');
@@ -81,9 +94,9 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium text-gray-900">Our Location</h3>
                     <p className="text-gray-600">
-                      123 Baby Shop Street
+                      240 BabyBlist Shed Number
                       <br />
-                      New York, NY 10001
+                      Bmendat Food Market
                     </p>
                   </div>
                 </div>
@@ -100,7 +113,7 @@ export default function ContactPage() {
                   <Mail className="mt-1 w-6 h-6 text-pink-600" />
                   <div>
                     <h3 className="font-medium text-gray-900">Email Address</h3>
-                    <p className="text-gray-600">support@babyshop.com</p>
+                    <p className="text-gray-600">support@babybliss.com</p>
                   </div>
                 </div>
 
@@ -109,9 +122,9 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium text-gray-900">Working Hours</h3>
                     <p className="text-gray-600">
-                      Monday - Friday: 9:00 AM - 6:00 PM
+                      Monday - Friday: 8:00 AM - 6:00 PM
                       <br />
-                      Saturday: 10:00 AM - 4:00 PM
+                      Saturday: 9:00 AM - 5:00 PM
                       <br />
                       Sunday: Closed
                     </p>
@@ -147,26 +160,26 @@ export default function ContactPage() {
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="gap-6 grid grid-cols-1 md:grid-cols-2">
                   <div>
-                    <label 
-                      htmlFor="name"
+                    <label
+                      htmlFor="phone"
                       className="block mb-1 font-medium text-gray-700 text-sm"
                     >
-                      Your Name
+                      Your Phone Number
                     </label>
                     <input
-                      type="text"
+                      type="tel"
                       id="name"
-                      name="name"
+                      name="phone"
                       value={formData.name}
                       onChange={handleChange}
                       required
                       className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
-                      placeholder="John Doe"
+                      placeholder="+237-547-686-79"
                     />
                   </div>
 
                   <div>
-                    <label 
+                    <label
                       htmlFor="email"
                       className="block mb-1 font-medium text-gray-700 text-sm"
                     >
@@ -184,28 +197,30 @@ export default function ContactPage() {
                     />
                   </div>
                 </div>
-
                 <div>
-                  <label 
-                    htmlFor="subject"
+                  <label
+                    htmlFor="title"
                     className="block mb-1 font-medium text-gray-700 text-sm"
                   >
                     Subject
                   </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
+                  <select className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full focus:outline-none"
+                    name="title"
+                    id="title"
+                    value={formData.title}
                     onChange={handleChange}
-                    required
-                    className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
-                    placeholder="How can we help you?"
-                  />
+
+                  >
+                    <option value="">How can we help you?</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="suggestion">Suggestion</option>
+                    <option value="question">Question</option>
+                    <option value="complaint">Complaint</option>
+                  </select>
                 </div>
 
                 <div>
-                  <label 
+                  <label
                     htmlFor="message"
                     className="block mb-1 font-medium text-gray-700 text-sm"
                   >
