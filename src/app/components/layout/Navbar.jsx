@@ -25,7 +25,7 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link href="/" className="flex flex-shrink-0 items-center">
               <span className="font-bold text-2xl text-pink-600">
-                BabyShop
+                BabyBliss
               </span>
             </Link>
           </div>

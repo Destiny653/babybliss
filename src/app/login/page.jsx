@@ -15,6 +15,7 @@ import {
   UserCircle
 } from 'lucide-react'; 
 import { basicUrl } from '../components/url';
+import toast from 'react-hot-toast';
 
 const API_URL = basicUrl;
 
@@ -144,6 +145,7 @@ const LoginForm = () => {
         const data = await res.json();
   
         if (!res.ok) {
+          toast.error(data.message)
           throw new Error(data.message);
         }
   

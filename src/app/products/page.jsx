@@ -5,8 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { Star, SlidersHorizontal, X } from 'lucide-react';
 import { useStore } from '../store/useStore'; 
-import { basicUrl } from '../components/url';
-import Error from '../components/error';
+import { basicUrl } from '../components/url'; 
+import toast from 'react-hot-toast';
+
 
 const categories = [
   'All',

@@ -4,6 +4,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, X, Plus, Minus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useStore } from '../store/useStore';
+import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 
 
@@ -118,7 +120,7 @@ const CartSidebar = () => {
                         />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-medium text-gray-800">{item.title.slice(0,15)}</h3>
+                        <h3 className="font-medium text-gray-800">{item.title.slice(0, 15)}</h3>
                         <p className="font-medium text-pink-500">{item.price.toFixed(2)}XAF</p>
                         <div className="flex items-center gap-2 mt-2">
                           <button
@@ -164,16 +166,18 @@ const CartSidebar = () => {
                     <span>{getCartTotal()}XAF</span>
                   </div>
                 </div>
-                <button
-                  className="bg-pink-500 hover:bg-pink-600 disabled:opacity-50 mt-4 py-3 rounded-lg w-full font-medium text-white transition-colors disabled:cursor-not-allowed"
-                  disabled={cart.length === 0}
-                  onClick={() => {
-                    // Handle checkout
-                    console.log('Proceeding to checkout...');
-                  }}
-                >
-                  Proceed to Checkout
-                </button>
+                <Link href={'/checkout'}>
+                  <button
+                    className="bg-pink-500 hover:bg-pink-600 disabled:opacity-50 mt-4 py-3 rounded-lg w-full font-medium text-white transition-colors disabled:cursor-not-allowed"
+                    disabled={cart.length === 0}
+                    onClick={() => {
+                      // Handle checkout
+                      toast.success('Proceeding to checkout...');
+                    }}
+                  >
+                    Proceed to Checkout
+                  </button>
+                </Link>
               </div>
             </div>
           </motion.div>

@@ -76,7 +76,7 @@ export default function Footer() {
           {/* Contact Form */}
           <div>
             <h3 className="mb-4 font-semibold text-gray-900 text-lg">
-              Contact Us
+              Send us a message
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -124,7 +124,7 @@ export default function Footer() {
 
         <div className="border-gray-200 mt-8 pt-8 border-t text-center">
           <p className="text-gray-600">
-            © {new Date().getFullYear()} BabyShop. All rights reserved.
+            © {new Date().getFullYear()} BabyBliss. All rights reserved.
           </p>
         </div>
       </div>

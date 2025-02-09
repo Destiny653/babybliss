@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, Eye, EyeOff, User, Phone, ArrowLeft, Loader, CheckCircle } from 'lucide-react'; 
 import { useRouter } from 'next/navigation';
 import { basicUrl } from '../components/url';
+import toast from 'react-hot-toast';
+
 const RegistrationForm = () => {
     const [step, setStep] = useState(1);
     const navigation = useRouter()
@@ -36,14 +38,15 @@ const RegistrationForm = () => {
         const data = await res.json();
   
         if (!res.ok) {
+          toast.error(data.message || 'Something went wrong')
           throw new Error(data.message || 'Something went wrong');
         }
   
         localStorage.setItem('otpEmail', email);
-        alert(data.message);
+        toast.success(data.message);
         setStep(2);
       } catch (error) {
-        alert(error instanceof Error ? error.message : 'An error occurred');
+        toast.error(error instanceof Error ? error.message : 'An error occurred');
       } finally {
         setLoading(false);
       }
@@ -54,14 +57,14 @@ const RegistrationForm = () => {
       const email = localStorage.getItem('otpEmail');
   
       if (!email) {
-        alert("Please submit email first");
+        toast.error("Please submit email first");
         setStep(1);
         return;
       }
   
       const otpString = otp.join('');
       if (otpString.length !== 6) {
-        alert("Please enter complete OTP");
+        toast.error("Please enter complete OTP");
         return;
       }
   
@@ -77,15 +80,16 @@ const RegistrationForm = () => {
         const data = await res.json();
   
         if (!res.ok) {
+          toast.error("OTP Error: "+data.message)
           throw new Error(data.message || 'OTP verification failed');
         }
   
         localStorage.setItem('otp', otpString);
         setOtpVerified(true);
-        alert(data.message);
+        toast.success(data.message);
         setStep(3);
       } catch (error) {
-        alert(error instanceof Error ? error.message : 'An error occurred');
+        toast.error(error instanceof Error ? error.message : 'An error occurred');
       } finally {
         setLoading(false);
       }
@@ -111,7 +115,7 @@ const RegistrationForm = () => {
       e.preventDefault();
       
       if (formData.password !== formData.confirmPassword) {
-        alert("Passwords don't match");
+        toast.error("Passwords don't match");
         return;
       }
   
@@ -119,7 +123,7 @@ const RegistrationForm = () => {
       const otpString = localStorage.getItem('otp');
   
       if (!email || !otpString) {
-        alert("Please complete email verification first");
+        toast.error("Please complete email verification first");
         setStep(1);
         return;
       }
@@ -140,6 +144,7 @@ const RegistrationForm = () => {
         const data = await res.json();
   
         if (!res.ok) {
+          toast.error(data.message || 'Registration failed')
           throw new Error(data.message || 'Registration failed');
         }
   
@@ -147,11 +152,11 @@ const RegistrationForm = () => {
         localStorage.removeItem('otpEmail');
         localStorage.removeItem('otp');
   
-        alert('Registration successful!');
+        toast.success('Registration successful!');
         navigation.push('/login') // Redirect or handle success
         // Redirect or handle success
       } catch (error) {
-        alert(error instanceof Error ? error.message : 'An error occurred');
+        toast.error(error instanceof Error ? error.message : 'An error occurred');
       } finally {
         setLoading(false);
       }

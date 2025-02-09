@@ -165,7 +165,7 @@ export default function CheckoutPage() {
                       <h3 className="font-medium text-gray-900 text-sm">{item.title}</h3>
                       <p className="text-gray-500 text-sm">Qty: {item.quantity}</p>
                       <p className="font-medium text-gray-900 text-sm">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        {(item.price * item.quantity).toFixed(2)}XAF
                       </p>
                     </div>
                   </div>
@@ -175,19 +175,19 @@ export default function CheckoutPage() {
               <div className="space-y-2 pt-4 border-t">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium">{subtotal.toFixed(2)}XAF</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Shipping</span>
-                  <span className="font-medium">${shipping.toFixed(2)}</span>
+                  <span className="font-medium">{shipping.toFixed(2)}XAF</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Tax</span>
-                  <span className="font-medium">${tax.toFixed(2)}</span>
+                  <span className="font-medium">{tax.toFixed(2)}XAF</span>
                 </div>
                 <div className="flex justify-between pt-2 border-t font-semibold text-lg">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>{total.toFixed(2)}XAF</span>
                 </div>
               </div>
 
