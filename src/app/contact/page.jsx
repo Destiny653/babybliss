@@ -204,7 +204,7 @@ export default function ContactPage() {
                   >
                     Subject
                   </label>
-                  <select className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full focus:outline-none"
+                  <select className="border-gray-300 focus:border-pink-500 px-4 py-3 border rounded-md focus:ring-pink-500 w-full focus:outline-none bg-[#fff]"
                     name="title"
                     id="title"
                     value={formData.title}

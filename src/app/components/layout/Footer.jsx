@@ -105,7 +105,7 @@ export default function Footer() {
                 />
               </div> 
               <div>
-                <select className="border-gray-300 px-3 py-2 border rounded-md focus:ring-1 focus:ring-pink-500 w-full focus:outline-none"
+                <select className="border-gray-300 bg-[#fff] px-3 py-3 border rounded-md focus:ring-1 focus:ring-pink-500 w-full focus:outline-none"
                    name="title"
                    value={formData.title}
                    onChange={handleChange} 
