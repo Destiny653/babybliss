@@ -56,7 +56,7 @@ export default function ProductDetail() {
     };
 
     fetchProduct();
-  }, [params.id]);
+  }, [params._did]);
 
   const handleQuantityChange = (action) => {
     if (action === 'increase' && quantity < product?.stock) {

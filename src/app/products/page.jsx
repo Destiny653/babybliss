@@ -26,7 +26,7 @@ const sortOptions = [
 ];
 
 export default function ProductsPage() {
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const addToCart = useStore((state) => state.addToCart);
   
   const [products, setProducts] = useState([]);
