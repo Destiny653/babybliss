@@ -67,13 +67,14 @@ export default function CheckoutPage() {
   const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const shipping = SHIPPING_METHODS.find(method => method.id === formData.shippingMethod)?.price || 0;
   const tax = subtotal * 0.1; // 10% tax
-  const total = subtotal + shipping + tax;
+  const total = Math.round(subtotal + shipping + tax);
+  
 
   // setCoinbasePayment
 
   const config = {
     headers: {
-      "X-CC-Api-Key": process.env.NEXT_PUBLIC_COINBASE_API_KEY,
+      "X-CC-Api-Key": process.env.NEXT_PUBLIC_COINBASE_API,
     },
   }
 
