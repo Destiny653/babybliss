@@ -3,16 +3,18 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { 
-  CreditCard, 
-  Truck, 
-  Shield, 
+import {
+  CreditCard,
+  Truck,
+  Shield,
   ChevronRight,
   AlertCircle,
   Check
-} from 'lucide-react'; 
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useStore } from '../store/useStore';
+import axios from 'axios';
+import { makePayment } from '@/utils/helper';
 
 const SHIPPING_METHODS = [
   {
@@ -35,7 +37,11 @@ export default function CheckoutPage() {
   const router = useRouter();
   const cartItems = useStore((state) => state.cart);
   const clearCart = useStore((state) => state.clearCart);
-  
+  const [paymentUrl, setPaymentUrl] = useState(null);
+  const [payUrl, setPayUrl] = useState(null)
+  const [payment, setPayment] = useState(false)
+
+
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1); // 1: Shipping, 2: Payment
   const [formData, setFormData] = useState({
@@ -63,6 +69,33 @@ export default function CheckoutPage() {
   const tax = subtotal * 0.1; // 10% tax
   const total = subtotal + shipping + tax;
 
+  // setCoinbasePayment
+
+  const config = {
+    headers: {
+      "X-CC-Api-Key": process.env.NEXT_PUBLIC_COINBASE_API_KEY,
+    },
+  }
+
+  const payWithCrypto = async (amount, currency) => {
+    const data = {
+      local_price: {
+        amount,
+        currency,
+      },
+      description: "Payment for a product",
+      pricing_type: "fixed_price",
+    };
+    await axios
+      .post("https://api.commerce.coinbase.com/charges", data, config)
+      .then((response) => {
+        setPaymentUrl(response.data.data.hosted_url);
+        console.log('hosted URl', response.data.data.hosted_url);
+      }).catch((error) => {
+        console.error("error from fronted func:", error);
+      })
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -74,9 +107,9 @@ export default function CheckoutPage() {
   const handleShippingSubmit = (e) => {
     e.preventDefault();
     // Validate shipping information
-    if (!formData.firstName || !formData.lastName || !formData.email || 
-        !formData.phone || !formData.address || !formData.city || 
-        !formData.state || !formData.zipCode) {
+    if (!formData.firstName || !formData.lastName || !formData.email ||
+      !formData.phone || !formData.address || !formData.city ||
+      !formData.state || !formData.zipCode) {
       toast.error('Please fill in all required fields');
       return;
     }
@@ -90,10 +123,11 @@ export default function CheckoutPage() {
     try {
       // This would be your actual payment processing API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+      toast.success('Payment in progress')
+
       // Clear cart and redirect to success page
-      clearCart();
-      router.push('/checkout/success');
+      // clearCart();
+      // router.push('/checkout/success');
     } catch (error) {
       toast.error('Payment failed. Please try again.');
     } finally {
@@ -105,7 +139,7 @@ export default function CheckoutPage() {
     return (
       <div className="flex justify-center items-center bg-gray-50 min-h-screen">
         <div className="text-center">
-          <h2 className="mb-4 font-bold text-2xl text-gray-900">Your cart is empty</h2>
+          <h2 className="mb-4 font-bold text-gray-900 text-2xl">Your cart is empty</h2>
           <button
             onClick={() => router.push('/products')}
             className="inline-flex items-center bg-pink-600 hover:bg-pink-700 px-6 py-3 rounded-md text-white"
@@ -125,18 +159,16 @@ export default function CheckoutPage() {
         <div className="mb-8">
           <div className="flex justify-center items-center space-x-4">
             <div className={`flex items-center ${step >= 1 ? 'text-pink-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                step >= 1 ? 'bg-pink-100' : 'bg-gray-100'
-              }`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-pink-100' : 'bg-gray-100'
+                }`}>
                 {step > 1 ? <Check className="w-5 h-5" /> : '1'}
               </div>
               <span className="ml-2 font-medium">Shipping</span>
             </div>
             <div className={`w-16 h-0.5 ${step >= 2 ? 'bg-pink-600' : 'bg-gray-200'}`} />
             <div className={`flex items-center ${step >= 2 ? 'text-pink-600' : 'text-gray-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                step >= 2 ? 'bg-pink-100' : 'bg-gray-100'
-              }`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${step >= 2 ? 'bg-pink-100' : 'bg-gray-100'
+                }`}>
                 2
               </div>
               <span className="ml-2 font-medium">Payment</span>
@@ -149,10 +181,10 @@ export default function CheckoutPage() {
           <div className="order-2 lg:order-2 lg:col-span-1">
             <div className="top-6 sticky bg-white shadow-lg p-6 rounded-lg">
               <h2 className="mb-6 font-semibold text-gray-900 text-xl">Order Summary</h2>
-              
+
               <div className="space-y-4 mb-6">
                 {cartItems.map((item) => (
-                  <div key={item.id} className="flex space-x-4">
+                  <div key={item._id} className="flex space-x-4">
                     <div className="relative w-20 h-20">
                       <Image
                         src={item.img}
@@ -225,7 +257,7 @@ export default function CheckoutPage() {
                         value={formData.firstName}
                         onChange={handleChange}
                         required
-                        className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                        className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                     </div>
 
@@ -239,7 +271,7 @@ export default function CheckoutPage() {
                         value={formData.lastName}
                         onChange={handleChange}
                         required
-                        className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                        className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                     </div>
 
@@ -253,7 +285,7 @@ export default function CheckoutPage() {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                        className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                     </div>
 
@@ -267,7 +299,7 @@ export default function CheckoutPage() {
                         value={formData.phone}
                         onChange={handleChange}
                         required
-                        className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                        className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                     </div>
                   </div>
@@ -282,7 +314,7 @@ export default function CheckoutPage() {
                       value={formData.address}
                       onChange={handleChange}
                       required
-                      className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                      className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                     />
                   </div>
 
@@ -297,7 +329,7 @@ export default function CheckoutPage() {
                         value={formData.city}
                         onChange={handleChange}
                         required
-                        className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                        className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                     </div>
 
@@ -311,7 +343,7 @@ export default function CheckoutPage() {
                         value={formData.state}
                         onChange={handleChange}
                         required
-                        className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                        className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                     </div>
 
@@ -325,7 +357,7 @@ export default function CheckoutPage() {
                         value={formData.zipCode}
                         onChange={handleChange}
                         required
-                        className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                        className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                     </div>
                   </div>
@@ -339,11 +371,10 @@ export default function CheckoutPage() {
                       {SHIPPING_METHODS.map((method) => (
                         <label
                           key={method.id}
-                          className={`flex items-center p-4 border rounded-lg cursor-pointer ${
-                            formData.shippingMethod === method.id
-                              ? 'border-pink-600 bg-pink-50'
-                              : 'border-gray-300'
-                          }`}
+                          className={`flex items-center p-4 border rounded-lg cursor-pointer ${formData.shippingMethod === method.id
+                            ? 'border-pink-600 bg-pink-50'
+                            : 'border-gray-300'
+                            }`}
                         >
                           <input
                             type="radio"
@@ -385,7 +416,7 @@ export default function CheckoutPage() {
                     <button
                       type="button"
                       onClick={() => setStep(1)}
-                      className="text-pink-600 text-sm hover:text-pink-700"
+                      className="text-pink-600 hover:text-pink-700 text-sm"
                     >
                       Edit Shipping Info
                     </button>
@@ -410,7 +441,7 @@ export default function CheckoutPage() {
                         onChange={handleChange}
                         required
                         placeholder="1234 5678 9012 3456"
-                        className="border-gray-300 focus:border-pink-500 py-2 pr-10 pl-4 border rounded-md focus:ring-pink-500 w-full"
+                        className="py-2 pr-10 pl-4 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                       <CreditCard className="top-2.5 right-3 absolute w-5 h-5 text-gray-400" />
                     </div>
@@ -426,7 +457,7 @@ export default function CheckoutPage() {
                       value={formData.cardName}
                       onChange={handleChange}
                       required
-                      className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                      className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                     />
                   </div>
 
@@ -442,7 +473,7 @@ export default function CheckoutPage() {
                         onChange={handleChange}
                         required
                         placeholder="MM/YY"
-                        className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                        className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                     </div>
 
@@ -457,27 +488,59 @@ export default function CheckoutPage() {
                         onChange={handleChange}
                         required
                         placeholder="123"
-                        className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                        className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       />
                     </div>
                   </div>
+                  <div>
+                    {/* choose payment method radio button*/}
+                    <label className="block mb-1 font-medium text-gray-700 text-sm">
+                      Payment Method *
+                    </label>
+                    <div className="space-y-4">
+                      <label className='flex gap-[5px]'>
+                        <input type='radio' name='pay' value={1}
+                          onChange={() => setPayment(true)}
+                        />
+                        Crypto
+                      </label>
+                      <label className='flex gap-[5px] space-x-4'>
+                        <input type='radio' name='pay' value={2}
+                          onChange={() => setPayment(false)}
+                        />
+                        Mobile Payment
+                      </label>
+                    </div>
+                  </div>
 
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="flex justify-center items-center space-x-2 bg-pink-600 hover:bg-pink-700 disabled:bg-pink-400 py-3 rounded-md w-full text-white transition-colors"
-                  >
-                    {loading ? (
-                      <>
-                        <div className="border-white border-b-2 rounded-full w-5 h-5 animate-spin"></div>
-                        <span>Processing...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Pay ${total.toFixed(2)}</span>
-                      </>
-                    )}
-                  </button>
+                  {
+                    paymentUrl || payUrl ?
+                      <a href={paymentUrl || payUrl}
+                        className="flex justify-center items-center space-x-2 bg-green-600 hover:bg-green-700 disabled:bg-green-400 mt-[10px] py-3 rounded-md w-full text-white transition-colors"
+                        target='_blank'>
+                        Validate Payment
+                        {/* <button className="flex justify-center items-center space-x-2 bg-green-600 hover:bg-green-700 disabled:bg-green-400 mt-[10px] py-3 rounded-md w-full text-white transition-colors">Pay with Crypto</button> */}
+                      </a>
+                      :
+                      <button
+                        disabled={loading}
+                        type='submit'
+                        className="flex justify-center items-center space-x-2 bg-pink-600 hover:bg-pink-700 disabled:bg-pink-400 py-3 rounded-md w-full text-white transition-colors"
+                      >
+                        {
+                          loading ? (
+                            <>
+                              <div className="border-white border-b-2 rounded-full w-5 h-5 animate-spin"></div>
+                              <span>Processing...</span>
+                            </>
+                          ) : (
+                            <>
+                              <span onClick={() => { payment ? payWithCrypto(total, 'XAF') : makePayment(cartItems, total).then(data => setPayUrl(data)) }} >Pay {total.toFixed(2)}XAF</span>
+                            </>
+                          )
+                        }
+                      </button>
+                  }
                 </form>
               )}
             </div>

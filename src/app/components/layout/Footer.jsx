@@ -100,12 +100,12 @@ export default function Footer() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="Your email"
-                  className="border-gray-300 px-3 py-2 border rounded-md focus:ring-1 focus:ring-pink-500 w-full focus:outline-none"
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-pink-500 w-full"
                   required
                 />
               </div> 
               <div>
-                <select className="border-gray-300 bg-[#fff] px-3 py-3 border rounded-md focus:ring-1 focus:ring-pink-500 w-full focus:outline-none"
+                <select className="bg-[#fff] px-3 sm:py-[4px] lg:py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-pink-500 w-full"
                    name="title"
                    value={formData.title}
                    onChange={handleChange} 
@@ -124,7 +124,7 @@ export default function Footer() {
                   onChange={handleChange}
                   placeholder="Your message"
                   rows="4"
-                  className="border-gray-300 px-3 py-2 border rounded-md focus:ring-1 focus:ring-pink-500 w-full focus:outline-none"
+                  className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-pink-500 w-full"
                   required
                 ></textarea>
               </div>
@@ -138,7 +138,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-gray-200 mt-8 pt-8 border-t text-center">
+        <div className="mt-8 pt-8 border-gray-200 border-t text-center">
           <p className="text-gray-600">
             © {new Date().getFullYear()} BabyBliss. All rights reserved.
           </p>

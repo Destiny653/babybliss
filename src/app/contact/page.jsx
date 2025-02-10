@@ -73,7 +73,7 @@ export default function ContactPage() {
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         {/* Header Section */}
         <div className="mb-12 text-center">
-          <h1 className="mb-4 font-bold text-4xl text-gray-900">Contact Us</h1>
+          <h1 className="mb-4 font-bold text-gray-900 text-4xl">Contact Us</h1>
           <p className="mx-auto max-w-2xl text-gray-600 text-lg">
             Have questions? We'd love to hear from you. Send us a message
             and we'll respond as soon as possible.
@@ -84,7 +84,7 @@ export default function ContactPage() {
           {/* Contact Information */}
           <div className="lg:col-span-1">
             <div className="space-y-8 bg-white shadow-lg p-6 rounded-lg">
-              <h2 className="font-semibold text-2xl text-gray-900">
+              <h2 className="font-semibold text-gray-900 text-2xl">
                 Contact Information
               </h2>
 
@@ -153,7 +153,7 @@ export default function ContactPage() {
           {/* Contact Form */}
           <div className="lg:col-span-2">
             <div className="bg-white shadow-lg p-6 rounded-lg">
-              <h2 className="mb-6 font-semibold text-2xl text-gray-900">
+              <h2 className="mb-6 font-semibold text-gray-900 text-2xl">
                 Send Us a Message
               </h2>
 
@@ -173,7 +173,7 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                      className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       placeholder="+237-547-686-79"
                     />
                   </div>
@@ -192,7 +192,7 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                      className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -204,7 +204,7 @@ export default function ContactPage() {
                   >
                     Subject
                   </label>
-                  <select className="border-gray-300 focus:border-pink-500 px-4 py-3 border rounded-md focus:ring-pink-500 w-full focus:outline-none bg-[#fff]"
+                  <select className="bg-[#fff] px-4 sm:py-[4px] md:py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:outline-none focus:ring-pink-500 w-full"
                     name="title"
                     id="title"
                     value={formData.title}
@@ -233,7 +233,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="border-gray-300 focus:border-pink-500 px-4 py-2 border rounded-md focus:ring-pink-500 w-full"
+                    className="px-4 py-2 border border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
                     placeholder="Your message here..."
                   />
                 </div>
@@ -263,10 +263,10 @@ export default function ContactPage() {
         {/* Map Section */}
         <div className="mt-12">
           <div className="bg-white shadow-lg p-6 rounded-lg">
-            <h2 className="mb-6 font-semibold text-2xl text-gray-900">
+            <h2 className="mb-6 font-semibold text-gray-900 text-2xl">
               Our Location
             </h2>
-            <div className="aspect-w-16 aspect-h-9">
+            <div className="aspect-h-9 aspect-w-16">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.30596698663!2d-74.25987368715491!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1645756805741!5m2!1sen!2s"
                 className="rounded-lg w-full h-full"
