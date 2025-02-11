@@ -94,9 +94,9 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium text-gray-900">Our Location</h3>
                     <p className="text-gray-600">
-                      240 BabyBlist Shed Number
+                      240 BabyBliss Shed Number
                       <br />
-                      Bmendat Food Market
+                      Bamenda Food Market
                     </p>
                   </div>
                 </div>
