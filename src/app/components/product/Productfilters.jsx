@@ -34,7 +34,7 @@ export default function ProductFilters({ onFilterChange }) {
           <select
             value={model}
             onChange={handleModelChange}
-            className="border-gray-300 focus:border-pink-500 shadow-sm rounded-md focus:ring-pink-500 w-full"
+            className="shadow-sm border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
           >
             <option value="all">All Categories</option>
             {models.map((m) => (
@@ -51,7 +51,7 @@ export default function ProductFilters({ onFilterChange }) {
           <select
             value={priceRange}
             onChange={handlePriceChange}
-            className="border-gray-300 focus:border-pink-500 shadow-sm rounded-md focus:ring-pink-500 w-full"
+            className="shadow-sm border-gray-300 focus:border-pink-500 rounded-md focus:ring-pink-500 w-full"
           >
             {priceRanges.map((range) => (
               <option key={range.value} value={range.value}>

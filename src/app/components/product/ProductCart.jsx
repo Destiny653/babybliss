@@ -14,8 +14,8 @@ export default function ProductCard({ product }) {
   };
 
   return (
-    <Link href={`/products/${product.id}`} className="group">
-      <div className="relative bg-white shadow-md hover:shadow-lg rounded-lg transition-transform hover:-translate-y-1 duration-300 overflow-hidden">
+    <Link href={`/products/${product._id}`} className="group">
+      <div key={product._id} className="relative bg-white shadow-md hover:shadow-lg rounded-lg overflow-hidden transition-transform hover:-translate-y-1 duration-300">
         {/* Badge */}
         {product.badge && (
           <div className="top-2 right-2 z-10 absolute">
@@ -26,20 +26,20 @@ export default function ProductCard({ product }) {
         )}
 
         {/* Image */}
-        <div className="bg-gray-200 aspect-w-1 w-full aspect-h-1 overflow-hidden">
+        <div className="bg-gray-200 w-full aspect-h-1 aspect-w-1 overflow-hidden">
           <Image
             src={product.img}
             alt={product.title}
             width={300}
             height={300}
-            className="group-hover:scale-105 transition-transform duration-300 object-center object-cover"
+            className="object-center object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>
 
         {/* Content */}
         <div className="p-4">
           <h3 className="mb-2 font-medium text-gray-900 text-lg">
-            {product.title}
+            {product.title.slice(0,16)}
           </h3>
           
           {/* Price and Rating */}
@@ -48,7 +48,7 @@ export default function ProductCard({ product }) {
               ${product.price}
             </span>
             <div className="flex items-center">
-              <Star className="w-4 h-4 text-yellow-400 fill-current" />
+              <Star className="fill-current w-4 h-4 text-yellow-400" />
               <span className="ml-1 text-gray-600 text-sm">
                 {product.rate} ({product.reviewCount})
               </span>

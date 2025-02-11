@@ -15,6 +15,7 @@ import toast from 'react-hot-toast';
 import { useStore } from '../store/useStore';
 import axios from 'axios';
 import { makePayment } from '@/utils/helper';
+import { basicUrl } from '../components/url'; 
 
 const SHIPPING_METHODS = [
   {
@@ -54,6 +55,7 @@ export default function CheckoutPage() {
     city: '',
     state: '',
     zipCode: '',
+    country: '',
     // Shipping Method
     shippingMethod: 'standard',
     // Payment Information
@@ -68,7 +70,7 @@ export default function CheckoutPage() {
   const shipping = SHIPPING_METHODS.find(method => method.id === formData.shippingMethod)?.price || 0;
   const tax = subtotal * 0.1; // 10% tax
   const total = Math.round(subtotal + shipping + tax);
-  
+
 
   // setCoinbasePayment
 
@@ -123,14 +125,38 @@ export default function CheckoutPage() {
 
     try {
       // This would be your actual payment processing API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const res = await fetch(`${basicUrl}/api/order`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          client: localStorage.getItem('clientId'),
+          products: cartItems,
+          shippingAddress: {
+            fullName: formData.firstName + " " + formData.lastName,
+            zipCode: formData.zipCode,
+            street: formData.street,
+            city: formData.city, 
+            state: formData.state,
+            address: formData.address,
+            email: formData.email,
+            phone: formData.phone
+          }
+        })
+      })
+
+      const req = await res.json()
+      if(!res.ok){
+        toast.error(req.message)
+      }
       toast.success('Payment in progress')
 
       // Clear cart and redirect to success page
-      // clearCart();
+      clearCart();
       // router.push('/checkout/success');
     } catch (error) {
-      toast.error('Payment failed. Please try again.');
+      toast.error('Payment fail: '+ error.message);
     } finally {
       setLoading(false);
     }

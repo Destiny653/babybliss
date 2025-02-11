@@ -231,18 +231,20 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-center mb-12">Featured Products</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {data?.slice(0,4).map((product) => (
+            {data?.slice(0, 4).map((product) => (
               <div
                 key={product._id}
                 className="product-card group relative bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:-translate-y-2"
               >
                 <div className="relative h-64">
-                  <Image
-                    src={product.img}
-                    alt={product.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                  />
+                  <Link href={`/products/${product._id}`}>
+                    <Image
+                      src={product.img}
+                      alt={product.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                  </Link>
                   <button className="absolute top-4 right-4 w-8 h-8 bg-white rounded-full flex items-center justify-center text-gray-600 hover:text-pink-600 transition-colors">
                     <Heart className="w-5 h-5" />
                   </button>
@@ -258,7 +260,7 @@ export default function HomePage() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold text-gray-900">{product.price}XAF</span>
-                    <button className="bg-pink-600 text-white px-4 py-2 rounded-full hover:bg-pink-700 transition-colors" onClick={()=>addToCart(product)}>
+                    <button className="bg-pink-600 text-white px-4 py-2 rounded-full hover:bg-pink-700 transition-colors" onClick={() => addToCart(product)}>
                       Add to Cart
                     </button>
                   </div>

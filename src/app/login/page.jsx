@@ -145,12 +145,12 @@ const LoginForm = () => {
         const data = await res.json();
   
         if (!res.ok) {
-          toast.error(data.message)
-          throw new Error(data.message);
+          toast.error(data.message) 
         }
   
         localStorage.setItem('token', data.token);
         localStorage.setItem('name', `${data.data.firstName} ${data.data.lastName}`);
+        localStorage.setItem('clientId', data.data.email)
         
         showSuccess('Login successful!');
         router.push('/');
@@ -350,37 +350,37 @@ const LoginForm = () => {
             >
               <div className="mb-8 text-center">
                 <UserCircle className="mx-auto mb-2 w-16 h-16 text-pink-500" />
-                <h2 className="font-bold text-2xl text-gray-800">Welcome to Baby Paradise</h2>
+                <h2 className="font-bold text-gray-800 text-2xl">Welcome to Baby Paradise</h2>
                 <p className="text-gray-600">Please sign in to continue shopping</p>
               </div>
 
               <div className="space-y-4">
                 <div className="relative">
-                  <Mail className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 transform -translate-y-1/2" />
+                  <Mail className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 -translate-y-1/2 transform" />
                   <input
                     type="email"
                     placeholder="Email Address"
                     value={formState.email}
                     onChange={(e) => setFormState(prev => ({ ...prev, email: e.target.value }))}
-                    className="border-gray-200 focus:border-pink-500 py-3 pr-4 pl-10 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-200"
+                    className="py-3 pr-4 pl-10 border border-gray-200 focus:border-pink-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-200 w-full"
                     required
                   />
                 </div>
 
                 <div className="relative">
-                  <Lock className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 transform -translate-y-1/2" />
+                  <Lock className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 -translate-y-1/2 transform" />
                   <input
                     type={formState.showPassword ? "text" : "password"}
                     placeholder="Password"
                     value={formState.password}
                     onChange={(e) => setFormState(prev => ({ ...prev, password: e.target.value }))}
-                    className="border-gray-200 focus:border-pink-500 py-3 pr-12 pl-10 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-200"
+                    className="py-3 pr-12 pl-10 border border-gray-200 focus:border-pink-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-200 w-full"
                     required
                   />
                   <button
                     type="button"
                     onClick={() => setFormState(prev => ({ ...prev, showPassword: !prev.showPassword }))}
-                    className="top-1/2 right-3 absolute text-gray-400 hover:text-pink-500 transform -translate-y-1/2"
+                    className="top-1/2 right-3 absolute text-gray-400 hover:text-pink-500 -translate-y-1/2 transform"
                   >
                     {formState.showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
@@ -400,7 +400,7 @@ const LoginForm = () => {
                 <button
                   type="button"
                   onClick={() =>{ setFormState(prev => ({ ...prev, view: 'forgot-email' })); setResetMessage(()=>localStorage.setItem('message', 'reset'))}}
-                  className="font-medium text-pink-500 text-sm hover:text-pink-600"
+                  className="font-medium text-pink-500 hover:text-pink-600 text-sm"
                 >
                   Forgot password?
                 </button>
@@ -409,7 +409,7 @@ const LoginForm = () => {
               <button
                 type="submit"
                 disabled={formState.loading}
-                className="flex justify-center bg-pink-500 hover:bg-pink-600 shadow-sm px-4 py-3 border border-transparent rounded-lg focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 w-full font-medium text-sm text-white focus:outline-none transition-colors duration-200"
+                className="flex justify-center bg-pink-500 hover:bg-pink-600 shadow-sm px-4 py-3 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 w-full font-medium text-white text-sm transition-colors duration-200"
               >
                 {formState.loading ? (
                   <Loader className="w-5 h-5 animate-spin" />
@@ -418,7 +418,7 @@ const LoginForm = () => {
                 )}
               </button>
 
-              <p className="text-center text-gray-600 text-sm">
+              <p className="text-gray-600 text-sm text-center">
                 Don't have an account?{' '}
                 <a href="/register" className="font-medium text-pink-500 hover:text-pink-600">
                   Sign up
@@ -444,20 +444,20 @@ const LoginForm = () => {
 
               <div className="mb-8 text-center">
                 <Key className="mx-auto w-16 h-16 text-pink-500" />
-                <h2 className="mt-2 font-bold text-2xl text-gray-900">Forgot Password</h2>
+                <h2 className="mt-2 font-bold text-gray-900 text-2xl">Forgot Password</h2>
                 <p className="mt-2 text-gray-600 text-sm">
                   Enter your email address and we'll send you a verification code
                 </p>
               </div>
 
               <div className="relative">
-                <Mail className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 transform -translate-y-1/2" />
+                <Mail className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 -translate-y-1/2 transform" />
                 <input
                   type="email"
                   placeholder="Email Address"
                   value={formState.email}
                   onChange={(e) => setFormState(prev => ({ ...prev, email: e.target.value }))}
-                  className="border-gray-200 focus:border-pink-500 py-3 pr-4 pl-10 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-200"
+                  className="py-3 pr-4 pl-10 border border-gray-200 focus:border-pink-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-200 w-full"
                   required
                 />
               </div>
@@ -465,7 +465,7 @@ const LoginForm = () => {
               <button
                 type="submit"
                 disabled={formState.loading}
-                className="flex justify-center bg-pink-500 hover:bg-pink-600 shadow-sm px-4 py-3 border border-transparent rounded-lg focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 w-full font-medium text-sm text-white focus:outline-none transition-colors duration-200"
+                className="flex justify-center bg-pink-500 hover:bg-pink-600 shadow-sm px-4 py-3 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 w-full font-medium text-white text-sm transition-colors duration-200"
               >
                 {formState.loading ? (
                   <Loader className="w-5 h-5 animate-spin" />
@@ -492,7 +492,7 @@ const LoginForm = () => {
               </button>
 
               <div className="mb-8 text-center">
-                <h2 className="font-bold text-2xl text-gray-900">Verify OTP</h2>
+                <h2 className="font-bold text-gray-900 text-2xl">Verify OTP</h2>
                 <p className="mt-2 text-gray-600 text-sm">
                   We've sent a verification code to<br />
                   <span className="font-medium text-pink-500">{formState.email}</span>
@@ -509,7 +509,7 @@ const LoginForm = () => {
                     value={digit}
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
-                    className="border-gray-200 focus:border-pink-500 border rounded-lg w-12 h-12 font-semibold text-center text-xl focus:outline-none focus:ring-2 focus:ring-pink-200"
+                    className="border border-gray-200 focus:border-pink-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-200 w-12 h-12 font-semibold text-xl text-center"
                     required
                   />
                 ))}
@@ -518,7 +518,7 @@ const LoginForm = () => {
               <button
                 type="submit"
                 disabled={formState.loading}
-                className="flex justify-center bg-pink-500 hover:bg-pink-600 shadow-sm px-4 py-3 border border-transparent rounded-lg focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 w-full font-medium text-sm text-white focus:outline-none transition-colors duration-200"
+                className="flex justify-center bg-pink-500 hover:bg-pink-600 shadow-sm px-4 py-3 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 w-full font-medium text-white text-sm transition-colors duration-200"
               >
                 {formState.loading ? (
                   <Loader className="w-5 h-5 animate-spin" />
@@ -527,7 +527,7 @@ const LoginForm = () => {
                 )}
               </button>
 
-              <p className="text-center text-gray-600 text-sm">
+              <p className="text-gray-600 text-sm text-center">
                 Didn't receive the code?{' '}
                 <button
                   type="button"
@@ -557,7 +557,7 @@ const LoginForm = () => {
 
               <div className="mb-8 text-center">
                 <CheckCircle className="mx-auto w-16 h-16 text-green-500" />
-                <h2 className="mt-2 font-bold text-2xl text-gray-900">Reset Password</h2>
+                <h2 className="mt-2 font-bold text-gray-900 text-2xl">Reset Password</h2>
                 <p className="mt-2 text-gray-600 text-sm">
                   Create a new password for your account
                 </p>
@@ -565,33 +565,33 @@ const LoginForm = () => {
 
               <div className="space-y-4">
                 <div className="relative">
-                  <Lock className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 transform -translate-y-1/2" />
+                  <Lock className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 -translate-y-1/2 transform" />
                   <input
                     type={formState.showPassword ? "text" : "password"}
                     placeholder="New Password"
                     value={formState.newPassword}
                     onChange={(e) => setFormState(prev => ({ ...prev, newPassword: e.target.value }))}
-                    className="border-gray-200 focus:border-pink-500 py-3 pr-12 pl-10 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-200"
+                    className="py-3 pr-12 pl-10 border border-gray-200 focus:border-pink-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-200 w-full"
                     required
                     minLength={6}
                   />
                   <button
                     type="button"
                     onClick={() => setFormState(prev => ({ ...prev, showPassword: !prev.showPassword }))}
-                    className="top-1/2 right-3 absolute text-gray-400 hover:text-pink-500 transform -translate-y-1/2"
+                    className="top-1/2 right-3 absolute text-gray-400 hover:text-pink-500 -translate-y-1/2 transform"
                   >
                     {formState.showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
 
                 <div className="relative">
-                  <Lock className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 transform -translate-y-1/2" />
+                  <Lock className="top-1/2 left-3 absolute w-5 h-5 text-gray-400 -translate-y-1/2 transform" />
                   <input
                     type={formState.showPassword ? "text" : "password"}
                     placeholder="Confirm New Password"
                     value={formState.confirmPassword}
                     onChange={(e) => setFormState(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                    className="border-gray-200 focus:border-pink-500 py-3 pr-12 pl-10 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-pink-200"
+                    className="py-3 pr-12 pl-10 border border-gray-200 focus:border-pink-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-200 w-full"
                     required
                     minLength={6}
                   />
@@ -601,7 +601,7 @@ const LoginForm = () => {
               <button
                 type="submit"
                 disabled={formState.loading}
-                className="flex justify-center bg-pink-500 hover:bg-pink-600 shadow-sm px-4 py-3 border border-transparent rounded-lg focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 w-full font-medium text-sm text-white focus:outline-none transition-colors duration-200"
+                className="flex justify-center bg-pink-500 hover:bg-pink-600 shadow-sm px-4 py-3 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 w-full font-medium text-white text-sm transition-colors duration-200"
               >
                 {formState.loading ? (
                   <Loader className="w-5 h-5 animate-spin" />
