@@ -18,7 +18,7 @@ export default function CartPage() {
     return (
       <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
         <div className="text-center">
-          <h2 className="mb-4 font-bold text-2xl text-gray-900">
+          <h2 className="mb-4 font-bold text-gray-900 text-2xl">
             Your cart is empty
           </h2>
           <p className="mb-8 text-gray-600">
@@ -37,7 +37,7 @@ export default function CartPage() {
 
   return (
     <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-7xl">
-      <h1 className="mb-8 font-bold text-3xl text-gray-900">Shopping Cart</h1>
+      <h1 className="mb-8 font-bold text-gray-900 text-3xl">Shopping Cart</h1>
 
       <div className="gap-8 grid grid-cols-1 lg:grid-cols-3">
         {/* Cart Items */}
@@ -49,11 +49,10 @@ export default function CartPage() {
                 className="flex items-center gap-4 bg-white shadow-md p-4 rounded-lg"
               >
                 <div className="relative w-24 h-24">
-                  <Image
+                  <img
                     src={item.img}
-                    alt={item.title}
-                    fill
-                    className="rounded-md object-cover"
+                    alt={item.title} 
+                    className="rounded-md h-[100%]"
                   />
                 </div>
 
@@ -124,7 +123,7 @@ export default function CartPage() {
 
             <button
               onClick={clearCart}
-              className="border-gray-300 hover:bg-gray-50 mt-4 px-4 py-2 border rounded-md w-full text-gray-600 transition-colors"
+              className="hover:bg-gray-50 mt-4 px-4 py-2 border border-gray-300 rounded-md w-full text-gray-600 transition-colors"
             >
               Clear Cart
             </button>

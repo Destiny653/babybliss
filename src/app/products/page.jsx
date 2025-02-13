@@ -144,7 +144,7 @@ export default function ProductsPage() {
                       <span className="ml-2">{category}</span>
                     </label>
                   ))}
-                </div>
+                </div> 
               </div>
               {/* <ProductFilters onFilterChange={setFilteredProducts}/> */}
 
@@ -201,7 +201,7 @@ export default function ProductsPage() {
                 ))}
               </div>
             ) : (
-              <div className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <div  key={1} className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredProducts?.map((product) => (
                   // <div key={product._id} className="bg-white shadow-md rounded-lg overflow-hidden">
                   //   <div className="relative aspect-h-1 aspect-w-1">

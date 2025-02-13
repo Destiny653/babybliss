@@ -4,40 +4,35 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import { Star, Minus, Plus, ShoppingCart, Heart } from 'lucide-react';
-import { useStore } from '@/app/store/useStore'; 
+import { useStore } from '@/app/store/useStore';
 import { basicUrl } from '@/app/components/url';
+import toast from 'react-hot-toast';
 
 export default function ProductDetail() {
   const params = useParams();
+  console.log("params:", params)
   const addToCart = useStore((state) => state.addToCart);
-  
+  const cart = useStore(state => state.cart); 
+  const updateQuantity = useStore(state => state.updateQuantity);
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [quantity, setQuantity] = useState(1);
+  const [Cartitem, setCartItem] = useState({});
   const [selectedImage, setSelectedImage] = useState(0);
 
+
   useEffect(() => {
+    // Simulating API call with dummy data
+    
     const fetchProduct = async () => {
-      // This would be your actual API call
-      // Simulating API call with dummy data
-      const res = await fetch(`${basicUrl}/api/categories`)
-      const json = res.json()
-      setProduct(json.data)
-      const dummyProduct = {
-        id: params.id,
-        title: "Anti-Colic Bottle Set",
-        description: "Set of 3 anti-colic bottles with advanced vent system that helps reduce colic, gas, and fussiness. Perfect for newborns and growing babies.",
-        price: 24.99,
-        category: "Feeding",
-        images: [
-          "https://images.pexels.com/photos/3662847/pexels-photo-3662847.jpeg",
-          "https://images.pexels.com/photos/3662848/pexels-photo-3662848.jpeg",
-          "https://images.pexels.com/photos/3662849/pexels-photo-3662849.jpeg",
-        ],
-        rate: 4.8,
-        reviewCount: 1560,
-        stock: 15,
-        features: [
+      // This would be your actual API call 
+
+      const res = await fetch(`${basicUrl}/api/category`)
+      const json = await res.json()
+      const data = json.data 
+
+      const productsArr = data?.map((item) => ({
+        ...item, features: [
           "BPA-free materials",
           "Anti-colic vent system",
           "Easy to clean",
@@ -49,30 +44,46 @@ export default function ProductDetail() {
           "Age Range": "0-12 months",
           "Package Contents": "3 bottles, 3 nipples",
         }
-      };
+      })
+      )
 
-      setProduct(dummyProduct);
+      setProduct(productsArr);
       setLoading(false);
     };
 
     fetchProduct();
-  }, [params._did]);
+  }, [params._id]);
+  console.table("Product: ", product)
+  console.table("product[0]?.img: ", !product == [] && product[0].img)
 
   const handleQuantityChange = (action) => {
     if (action === 'increase' && quantity < product?.stock) {
-      setQuantity(prev => prev + 1);
+      setCartItem(prev => prev + 1);
     } else if (action === 'decrease' && quantity > 1) {
-      setQuantity(prev => prev - 1);
+      setCartItem(prev => prev - 1);
     }
   };
 
-  if (loading) {
+  if (loading && product == []) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="border-pink-600 border-t-2 border-b-2 rounded-full w-32 h-32 animate-spin"></div>
       </div>
     );
   }
+
+
+  const index = product && product?.findIndex((item) => item?._id == params.id)
+  useEffect(() => {
+    console.log("select: ", index, selectedImage);
+    index && setSelectedImage(index)
+  }, [index])
+
+  const cartItem = index && cart.find((item) => item._id == product[selectedImage]._id)
+  useEffect(() => {
+    console.log("CartItems: ", cartItem, cart)
+    index && setCartItem(() => cartItem)
+  }, [cartItem])
 
   return (
     <div className="bg-gray-50 py-12 min-h-screen">
@@ -81,61 +92,58 @@ export default function ProductDetail() {
           <div className="gap-8 grid grid-cols-1 md:grid-cols-2 p-8">
             {/* Image Gallery */}
             <div className="space-y-4">
-              <div className="relative rounded-lg aspect-w-1 aspect-h-1 overflow-hidden">
-                <Image
-                  src={product.images[selectedImage]}
-                  alt={product.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="gap-4 grid grid-cols-4">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`relative aspect-w-1 aspect-h-1 rounded-lg overflow-hidden ${
-                      selectedImage === index ? 'ring-2 ring-pink-600' : ''
-                    }`}
-                  >
-                    <Image
-                      src={image}
-                      alt={`${product.title} ${index + 1}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
+              <section className='flex justify-evenly'>
+                <div className='flex flex-col gap-[15px] w-[25%] h-[750px] overflow-x-hidden overflow-y-scroll scrollbar-custom' >
+                  {product && product.map((_, i) => (
+                    <div key={i} className={`flex justify-center items-center  border-[2px] rounded-lg w-[100%]  h-[137px] ${selectedImage === i ? 'border-[#ca3d61]' : 'border-[#e5e7eb]'}  `}
+                      onClick={() => setSelectedImage(i)}
+                    >
+                      <  img
+                        src={product && !product == [] && _?.img}
+                        alt={product && !product == [] && _?.title}
+                        fill
+                        className="h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <div className="relative flex justify-center items-center rounded-lg w-[80%] aspect-h-1 aspect-w-1 overflow-hidden">
+                  <  img
+                    src={product && !product == [] && product[selectedImage]?.img}
+                    alt={product && !product == [] && product[selectedImage]?.title}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </section>
             </div>
 
             {/* Product Info */}
             <div className="space-y-6">
               <div>
-                <h1 className="font-bold text-3xl text-gray-900">{product.title}</h1>
+                <h1 className="font-bold text-gray-900 text-3xl">{!product == [] && product[selectedImage]?.title}</h1>
                 <div className="flex items-center mt-2">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-5 h-5 ${
-                          i < Math.floor(product.rate)
-                            ? 'text-yellow-400 fill-current'
-                            : 'text-gray-300'
-                        }`}
+                        className={`w-5 h-5 ${i < Math.floor(!product == [] && product[selectedImage]?.rate)
+                          ? 'text-yellow-400 fill-current'
+                          : 'text-gray-300'
+                          }`}
                       />
                     ))}
                   </div>
                   <span className="ml-2 text-gray-600 text-sm">
-                    {product.rate} ({product.reviewCount} reviews)
+                    {!product == [] && product[selectedImage]?.rate} ({!product == [] && product[selectedImage]?.reviewCount} reviews)
                   </span>
                 </div>
               </div>
 
-              <p className="text-gray-600">{product.description}</p>
+              <p className="text-gray-600">{!product == [] && product[selectedImage]?.description}</p>
 
-              <div className="font-bold text-3xl text-pink-600">
-                ${product.price}
+              <div className="font-bold text-pink-600 text-3xl">
+                ${!product == [] && product[selectedImage]?.price}
               </div>
 
               <div className="space-y-4">
@@ -143,29 +151,29 @@ export default function ProductDetail() {
                   <span className="text-gray-700">Quantity:</span>
                   <div className="flex items-center border rounded-md">
                     <button
-                      onClick={() => handleQuantityChange('decrease')}
+                      onClick={() => updateQuantity(Cartitem._id, Cartitem.quantity - 1)}
                       className="hover:bg-gray-100 p-2"
-                      disabled={quantity <= 1}
+                      disabled={Cartitem && Cartitem.quantity <= 1}
                     >
                       <Minus size={20} />
                     </button>
-                    <span className="border-x px-4 py-2">{quantity}</span>
+                    <span className="px-4 py-2 border-x">{Cartitem ? Cartitem.quantity : 0}</span>
                     <button
-                      onClick={() => handleQuantityChange('increase')}
+                      onClick={() => updateQuantity(Cartitem._id, Cartitem.quantity + 1)}
                       className="hover:bg-gray-100 p-2"
-                      disabled={quantity >= product.stock}
+                      disabled={Cartitem && Cartitem.quantity >= !product && product[selectedImage]?.stock}
                     >
                       <Plus size={20} />
                     </button>
                   </div>
                   <span className="text-gray-500 text-sm">
-                    {product.stock} items available
+                    {!product == [] && product[selectedImage]?.stock} items available
                   </span>
                 </div>
 
                 <div className="flex space-x-4">
                   <button
-                    onClick={() => addToCart({ ...product, quantity })}
+                    onClick={() => addToCart(product[selectedImage])}
                     className="flex flex-1 justify-center items-center space-x-2 bg-pink-600 hover:bg-pink-700 py-3 rounded-md text-white transition-colors"
                   >
                     <ShoppingCart size={20} />
@@ -181,7 +189,7 @@ export default function ProductDetail() {
               <div>
                 <h3 className="mb-2 font-semibold text-lg">Key Features</h3>
                 <ul className="space-y-1 list-disc list-inside">
-                  {product.features.map((feature, index) => (
+                  {!product == [] && product[selectedImage]?.features?.map((feature, index) => (
                     <li key={index} className="text-gray-600">{feature}</li>
                   ))}
                 </ul>
@@ -191,12 +199,11 @@ export default function ProductDetail() {
               <div>
                 <h3 className="mb-2 font-semibold text-lg">Specifications</h3>
                 <div className="border rounded-md">
-                  {Object.entries(product.specifications).map(([key, value], index) => (
+                  {product && Object.entries(product[selectedImage].specifications).map(([key, value], index) => (
                     <div
                       key={key}
-                      className={`flex ${
-                        index !== 0 ? 'border-t' : ''
-                      }`}
+                      className={`flex ${index !== 0 ? 'border-t' : ''
+                        }`}
                     >
                       <div className="bg-gray-50 p-3 w-1/3 font-medium">
                         {key}

@@ -71,3 +71,18 @@ html {
 .category-card:hover::after {
   opacity: 0.8;
 }
+.scrollbar-custom {
+  scrollbar-width: 0;
+  scroll-snap-type: proximity;
+  }
+  .scrollbar-custom::-webkit-scrollbar {
+  /* width: 2px; */ 
+  display: none;
+}
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #6b415ba6;
+  border-radius: 10px;
+} 
+.scrollbar-custom::-webkit-scrollbar-track {
+  background-color: #e5e7eb; 
+} 
