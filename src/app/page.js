@@ -236,13 +236,13 @@ export default function HomePage() {
                 key={product._id}
                 className="product-card group relative bg-white rounded-lg shadow-lg overflow-hidden transform transition-transform hover:-translate-y-2"
               >
-                <div className="relative h-64">
+                <div className="relative h-64 flex justify-center items-center">
                   <Link href={`/products/${product._id}`}>
-                    <Image
+                    <img
                       src={product.img}
                       alt={product.title}
                       fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-110"
+                      className="object-cover transition-transform duration-300 group-hover:scale-110 h-full"
                     />
                   </Link>
                   <button className="absolute top-4 right-4 w-8 h-8 bg-white rounded-full flex items-center justify-center text-gray-600 hover:text-pink-600 transition-colors">
@@ -251,6 +251,9 @@ export default function HomePage() {
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{product.title}</h3>
+                  <p className="mb-2 text-gray-500 text-sm">
+                    {product.description.slice(0, 70)}...
+                  </p>
                   <div className="flex items-center mb-2">
                     <div className="flex items-center text-yellow-400">
                       <Star className="w-4 h-4 fill-current" />

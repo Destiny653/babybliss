@@ -114,9 +114,9 @@ export default function ProductsPage() {
           </button>
         </div>
 
-        <div className="flex lg:flex-row flex-col gap-8">
+        <div className="relative flex lg:flex-row flex-col gap-8">
           {/* Filters - Desktop */}
-          <div className={`lg:w-64 space-y-6 ${showFilters ? 'block' : 'hidden'} lg:block`}>
+          <div className={`lg:w-64 space-y-6 ${showFilters ? 'block' : 'hidden'} lg:block top-5 left-0 sticky h-fit`}>
             <div className="bg-white shadow p-6 rounded-lg">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-semibold text-lg">Filters</h3>
@@ -201,48 +201,9 @@ export default function ProductsPage() {
                 ))}
               </div>
             ) : (
-              <div  key={1} className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <div  className="gap-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredProducts?.map((product) => (
-                  // <div key={product._id} className="bg-white shadow-md rounded-lg overflow-hidden">
-                  //   <div className="relative aspect-h-1 aspect-w-1">
-                  //     <Link href={`/products/${product._id}`}>
-                  //       <Image
-                  //         src={product.img}
-                  //         alt={product.title}
-                  //         height={4000}
-                  //         width={4000}
-                  //         className="h-[200px]"
-                  //       />
-                  //     </Link>
-                  //   </div>
-                  //   <div className="p-4">
-                  //     <h3 className="mb-2 font-medium text-gray-900 text-lg">
-                  //       {product.title.slice(0, 16)}...
-                  //     </h3>
-                  //     <p className="mb-2 text-gray-500 text-sm">
-                  //       {product.description.slice(0, 75)}...
-                  //     </p>
-                  //     <div className="flex justify-between items-center">
-                  //       <span className="font-bold text-pink-600 text-xl">
-                  //         {product.price}XAF
-                  //       </span>
-                  //       <div className="flex items-center">
-                  //         <Star className="fill-current w-4 h-4 text-yellow-400" />
-                  //         <span className="ml-1 text-gray-600 text-sm">
-                  //           {product.rate} ({product.reviewCount})
-                  //         </span>
-                  //       </div>
-                  //     </div>
-                  //     <button
-                  //       onClick={() => addToCart(product)}
-                  //       className="bg-pink-600 hover:bg-pink-700 mt-4 py-2 rounded-md w-full text-white transition-colors"
-                  //     >
-                  //       Add to Cart
-                  //     </button>
-                  //   </div>
-                  // </div>
                   <ProductCard product={product} />
-
                 ))}
               </div>
             )}

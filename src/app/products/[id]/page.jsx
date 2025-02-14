@@ -12,7 +12,7 @@ export default function ProductDetail() {
   const params = useParams();
   console.log("params:", params)
   const addToCart = useStore((state) => state.addToCart);
-  const cart = useStore(state => state.cart); 
+  const cart = useStore(state => state.cart);
   const updateQuantity = useStore(state => state.updateQuantity);
 
   const [product, setProduct] = useState(null);
@@ -23,13 +23,13 @@ export default function ProductDetail() {
 
   useEffect(() => {
     // Simulating API call with dummy data
-    
+
     const fetchProduct = async () => {
       // This would be your actual API call 
 
       const res = await fetch(`${basicUrl}/api/category`)
       const json = await res.json()
-      const data = json.data 
+      const data = json.data
 
       const productsArr = data?.map((item) => ({
         ...item, features: [
@@ -56,13 +56,13 @@ export default function ProductDetail() {
   console.table("Product: ", product)
   console.table("product[0]?.img: ", !product == [] && product[0].img)
 
-  const handleQuantityChange = (action) => {
-    if (action === 'increase' && quantity < product?.stock) {
-      setCartItem(prev => prev + 1);
-    } else if (action === 'decrease' && quantity > 1) {
-      setCartItem(prev => prev - 1);
-    }
-  };
+  // const handleQuantityChange = (action) => {
+  //   if (action === 'increase' && quantity < product?.stock) {
+  //     setCartItem(prev => prev + 1);
+  //   } else if (action === 'decrease' && quantity > 1) {
+  //     setCartItem(prev => prev - 1);
+  //   }
+  // };
 
   if (loading && product == []) {
     return (
@@ -79,12 +79,13 @@ export default function ProductDetail() {
     index && setSelectedImage(index)
   }, [index])
 
-  const cartItem = index && cart.find((item) => item._id == product[selectedImage]._id)
-  useEffect(() => {
-    console.log("CartItems: ", cartItem, cart)
-    index && setCartItem(() => cartItem)
-  }, [cartItem])
-
+    const cartItem = product && cart.find((item) => item._id == product[selectedImage]._id)
+    useEffect(() => {
+      console.log("CartItems: ", cartItem, cart)
+      product && setCartItem(() => cartItem)
+    }, [cartItem, Cartitem])
+    console.log("CartItems hh : ", Cartitem)
+    
   return (
     <div className="bg-gray-50 py-12 min-h-screen">
       <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -151,17 +152,17 @@ export default function ProductDetail() {
                   <span className="text-gray-700">Quantity:</span>
                   <div className="flex items-center border rounded-md">
                     <button
-                      onClick={() => updateQuantity(Cartitem._id, Cartitem.quantity - 1)}
+                      onClick={() => updateQuantity(Cartitem?._id, Cartitem?.quantity - 1)}
                       className="hover:bg-gray-100 p-2"
-                      disabled={Cartitem && Cartitem.quantity <= 1}
+                      disabled={Cartitem && Cartitem?.quantity <= 1}
                     >
                       <Minus size={20} />
                     </button>
-                    <span className="px-4 py-2 border-x">{Cartitem ? Cartitem.quantity : 0}</span>
+                    <span className="px-4 py-2 border-x">{Cartitem?.quantity ? Cartitem?.quantity : 0}</span>
                     <button
-                      onClick={() => updateQuantity(Cartitem._id, Cartitem.quantity + 1)}
+                      onClick={() => updateQuantity(Cartitem?._id, Cartitem?.quantity + 1)}
                       className="hover:bg-gray-100 p-2"
-                      disabled={Cartitem && Cartitem.quantity >= !product && product[selectedImage]?.stock}
+                      disabled={Cartitem && Cartitem?.quantity >= !product && product[selectedImage]?.stock}
                     >
                       <Plus size={20} />
                     </button>
