@@ -146,6 +146,7 @@ const LoginForm = () => {
   
         if (!res.ok) {
           toast.error(data.message) 
+          return;
         }
   
         localStorage.setItem('token', data.token);
@@ -179,7 +180,8 @@ const LoginForm = () => {
         const data = await res.json();
   
         if (!res.ok) {
-          throw new Error(data.message);
+          toast.error(data.message) 
+           return;
         }
   
         localStorage.setItem('otpEmail', formState.email);
@@ -225,8 +227,9 @@ const LoginForm = () => {
         const data = await res.json();
   
         if (!res.ok) {
-          throw new Error(data.message);
-        }
+          toast.error(data.message) 
+          return;
+         }
   
         localStorage.setItem('otp', otpValue);
         localStorage.setItem('isVerified', 'true');
