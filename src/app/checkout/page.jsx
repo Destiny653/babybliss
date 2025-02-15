@@ -149,11 +149,10 @@ export default function CheckoutPage() {
       const req = await res.json()
       if(!res.ok){
         toast.error(req.message)
+        return;
       }
-      toast.success('Payment in progress')
-
-      // Clear cart and redirect to success page
-      clearCart();
+      toast.success('Payment in progress') 
+      return;
       // router.push('/checkout/success');
     } catch (error) {
       toast.error('Payment fail: '+ error.message);
@@ -558,11 +557,11 @@ export default function CheckoutPage() {
                           loading ? (
                             <>
                               <div className="border-white border-b-2 rounded-full w-5 h-5 animate-spin"></div>
-                              <span>Processing...</span>
+                              <span onClick={()=>clearCart()}>Processing...</span>
                             </>
                           ) : (
                             <>
-                              <span onClick={() => { payment ? payWithCrypto(total, 'XAF') : makePayment(cartItems, total).then(data => setPayUrl(data)) }} >Pay {total.toFixed(2)}XAF</span>
+                              <span onClick={() => { payment ? payWithCrypto(total, 'XAF') : makePayment(cartItems, total).then(data => setPayUrl(data)); }} >Pay {total.toFixed(2)}XAF</span>
                             </>
                           )
                         }
