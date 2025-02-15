@@ -16,7 +16,7 @@ const categories = [
   'All',
   'Feeding',
   'Clothing',
-  'Toy',
+  'Bath',
   'Diaper',
   'Valies',
   'Underwear'
