@@ -96,7 +96,7 @@ export default function ProductDetail() {
               <section className='flex md:flex-col justify-evenly'>
                 <div className='flex md:flex-col gap-[15px] w-[100%] md:w-[25%] md:h-[750px] overflow-x-scroll md:overflow-x-hidden overflow-y-scroll scrollbar-custom' >
                   {product && product.map((_, i) => (
-                    <div key={i} className={`flex justify-center items-center  border-[2px] rounded-lg md:w-[100%] w-[130px]  h-[137px] ${selectedImage === i ? 'border-[#ca3d61]' : 'border-[#e5e7eb]'}  `}
+                    <div key={i} className={`flex justify-center items-center  border-[2px] rounded-lg md:w-[100%] w-[120px] h-[120px]  md:h-[137px] ${selectedImage === i ? 'border-[#ca3d61]' : 'border-[#e5e7eb]'}  `}
                       onClick={() => setSelectedImage(i)}
                     >
                       <  img
