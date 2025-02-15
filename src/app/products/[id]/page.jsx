@@ -103,7 +103,7 @@ export default function ProductDetail() {
                         src={product && !product == [] && _?.img}
                         alt={product && !product == [] && _?.title}
                         fill
-                        className="h-full object-cover"
+                        className="w-full h-full"
                       />
                     </div>
                   ))}
