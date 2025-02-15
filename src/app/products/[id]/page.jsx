@@ -93,10 +93,10 @@ export default function ProductDetail() {
           <div className="gap-8 grid grid-cols-1 md:grid-cols-2 p-8">
             {/* Image Gallery */}
             <div className="space-y-4">
-              <section className='flex md:flex-row flex-col justify-evenly'>
+              <section className='flex md:flex-col justify-evenly'>
                 <div className='flex flex-col gap-[15px] w-[100%] md:w-[25%] md:h-[750px] overflow-x-scroll md:overflow-x-hidden overflow-y-scroll scrollbar-custom' >
                   {product && product.map((_, i) => (
-                    <div key={i} className={`flex justify-center items-center  border-[2px] rounded-lg md:w-[100%] w-[130px]  h-[137px] ${selectedImage === i ? 'border-[#ca3d61]' : 'border-[#e5e7eb]'}  `}
+                    <div key={i} className={`flex justify-center items-center flex-col md:flex-row  border-[2px] rounded-lg md:w-[100%] w-[130px]  h-[137px] ${selectedImage === i ? 'border-[#ca3d61]' : 'border-[#e5e7eb]'}  `}
                       onClick={() => setSelectedImage(i)}
                     >
                       <  img
@@ -108,7 +108,7 @@ export default function ProductDetail() {
                     </div>
                   ))}
                 </div>
-                <div className="relative flex justify-center items-center rounded-lg w-[80%] aspect-h-1 aspect-w-1 overflow-hidden">
+                <div className="relative flex justify-center items-center rounded-lg md:w-[80%] aspect-h-1 aspect-w-1 overflow-hidden">
                   <  img
                     src={product && !product == [] && product[selectedImage]?.img}
                     alt={product && !product == [] && product[selectedImage]?.title}
