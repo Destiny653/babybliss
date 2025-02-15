@@ -99,6 +99,11 @@ export default function CheckoutPage() {
       })
   }
 
+  useEffect(() => {  
+    return;
+  },[payUrl, paymentUrl])
+  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
