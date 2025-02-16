@@ -423,7 +423,7 @@ export default function CheckoutPage() {
                               {method.duration}
                             </p>
                           </div>
-                          <span className="font-medium">${method.price.toFixed(2)}</span>
+                          <span className="font-medium">{method.price.toFixed(2)}XAF</span>
                         </label>
                       ))}
                     </div>
