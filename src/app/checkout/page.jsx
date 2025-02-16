@@ -80,6 +80,11 @@ export default function CheckoutPage() {
   }
 
   const payWithCrypto = async (amount, currency) => {
+    const isLogin = localStorage.getItem('clientId')
+    if (!isLogin) {
+      toast.error("Please signin first.")
+      return;
+    }
     const data = {
       local_price: {
         amount,
