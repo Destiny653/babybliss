@@ -15,7 +15,7 @@ import toast from 'react-hot-toast';
 import { useStore } from '../store/useStore';
 import axios from 'axios';
 import { makePayment } from '@/utils/helper';
-import { basicUrl } from '../components/url'; 
+import { basicUrl } from '../components/url';
 
 const SHIPPING_METHODS = [
   {
@@ -71,7 +71,6 @@ export default function CheckoutPage() {
   const tax = subtotal * 0.1; // 10% tax
   const total = Math.round(subtotal + shipping + tax);
 
-
   // setCoinbasePayment
 
   const config = {
@@ -99,10 +98,10 @@ export default function CheckoutPage() {
       })
   }
 
-  useEffect(() => {  
+  useEffect(() => {
     return;
-  },[payUrl, paymentUrl])
-  
+  }, [payUrl, paymentUrl])
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -142,7 +141,7 @@ export default function CheckoutPage() {
             fullName: formData.firstName + " " + formData.lastName,
             zipCode: formData.zipCode,
             street: formData.street,
-            city: formData.city, 
+            city: formData.city,
             state: formData.state,
             address: formData.address,
             email: formData.email,
@@ -152,15 +151,15 @@ export default function CheckoutPage() {
       })
 
       const req = await res.json()
-      if(!res.ok){
+      if (!res.ok) {
         toast.error(req.message)
         return;
       }
-      toast.success('Payment in progress') 
+      toast.success('Payment in progress')
       return;
       // router.push('/checkout/success');
     } catch (error) {
-      toast.error('Payment fail: '+ error.message);
+      toast.error('Payment fail: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -547,6 +546,7 @@ export default function CheckoutPage() {
                   {
                     paymentUrl || payUrl ?
                       <a href={paymentUrl || payUrl}
+                        onClick={() => clearCart()}
                         className="flex justify-center items-center space-x-2 bg-green-600 hover:bg-green-700 disabled:bg-green-400 mt-[10px] py-3 rounded-md w-full text-white transition-colors"
                         target='_blank'>
                         Validate Payment
@@ -562,7 +562,7 @@ export default function CheckoutPage() {
                           loading ? (
                             <>
                               <div className="border-white border-b-2 rounded-full w-5 h-5 animate-spin"></div>
-                              <span onClick={()=>clearCart()}>Processing...</span>
+                              <span>Processing...</span>
                             </>
                           ) : (
                             <>

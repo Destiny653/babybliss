@@ -3,6 +3,9 @@ const { transaction_id, BASE_URL } = require('./constants');
 
 export const makePayment = async(products, totalAmount)=>{ 
 
+ const transaction_id = "pu-01258-01kj21058"+ new Date().getSeconds()
+
+
         const items = products.map(product => ({
             price_description: {
                 unit_amount: product.price
@@ -15,9 +18,9 @@ export const makePayment = async(products, totalAmount)=>{
             quantity: product.quantity
         }))
 
-    const api_token =process.env.API_TOKEN_LIVE;
-    const api_user = process.env.API_USER;
-    const api_password =process.env.API_PASSWORD;
+    const api_token ="live_6ZDeyUInCHE6r2PYuTWXUFSc9C448XxQAG2SQkZ5";
+    const api_user = "a27ede04-bcef-4f1e-8cc8-82b05733c387";
+    const api_password ="e01cdab1-b872-461c-b571-677e0af66794";
 
     const credentials = btoa(`${api_user}:${api_password}`)
     const authorization = `Basic ${credentials}`
@@ -26,7 +29,7 @@ export const makePayment = async(products, totalAmount)=>{
             'Content-Type': 'application/json',
             'x-api-key': api_token,
             'Authorization': authorization,
-            "mode": "test", 
+            "mode": "live", 
         }
     }
 
@@ -47,10 +50,22 @@ export const makePayment = async(products, totalAmount)=>{
     }
 
     try {
-        const response = await axios.post( BASE_URL + '/api/gateway/checkout/initialize', payload, config);
-        console.log("Payment responst: "+response.data);
-        return response?.data.data.redirect;
+        // const response = await axios.post( BASE_URL + '/api/gateway/checkout/initialize', payload, config);
+        // console.log("Payment responst: "+response.data);
+        // return await response?.data.redirect;
+        const res = await fetch(`https://gateway.payunit.net/api/gateway/checkout/initialize`,{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'x-api-key': api_token,
+                'Authorization': authorization,
+                "mode": "live", 
+            },
+            body: JSON.stringify(payload)
+        })
+        const req = await res.json()
+        return  req.data.redirect;
     } catch (error) {
-        console.error("Error payment: ",error); 
+        console.error("Error payment: ",error.message); 
     }
 }

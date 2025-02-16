@@ -131,7 +131,7 @@ const LoginForm = () => {
       }
   
       setFormState(prev => ({ ...prev, loading: true }));
-  
+      
       try {
         const res = await fetch(`${API_URL}/api/client/login`, {
           method: 'POST',
@@ -141,11 +141,12 @@ const LoginForm = () => {
             password: formState.password 
           })
         });
-  
+        
         const data = await res.json();
-  
+        
         if (!res.ok) {
           toast.error(data.message) 
+          setFormState(prev => ({ ...prev, loading: false }));
           return;
         }
   
@@ -157,6 +158,7 @@ const LoginForm = () => {
         router.push('/');
       } catch (error) {
         showError(error.message);
+        setFormState(prev => ({ ...prev, loading: false }));
       }
     };
   
@@ -181,6 +183,7 @@ const LoginForm = () => {
   
         if (!res.ok) {
           toast.error(data.message) 
+          setFormState(prev => ({ ...prev, loading: false }));
            return;
         }
   
@@ -193,6 +196,7 @@ const LoginForm = () => {
         }));
       } catch (error) {
         showError(error.message);
+        setFormState(prev => ({ ...prev, loading: false }));
       }
     };
   
@@ -228,6 +232,7 @@ const LoginForm = () => {
   
         if (!res.ok) {
           toast.error(data.message) 
+          setFormState(prev => ({ ...prev, loading: false }));
           return;
          }
   
@@ -242,6 +247,7 @@ const LoginForm = () => {
         }));
       } catch (error) {
         showError(error.message);
+        setFormState(prev => ({ ...prev, loading: false }));
       }
     };
   
@@ -291,6 +297,7 @@ const LoginForm = () => {
   
         if (!res.ok) {
           throw new Error(data.message);
+          setFormState(prev => ({ ...prev, loading: false }));
         }
   
         // Clear all stored data
@@ -311,6 +318,7 @@ const LoginForm = () => {
         }));
       } catch (error) {
         showError(error.message);
+        setFormState(prev => ({ ...prev, loading: false }));
       }
     };
   

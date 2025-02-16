@@ -38,8 +38,8 @@ const RegistrationForm = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        toast.error(data.message || 'Something went wrong')
-        throw new Error(data.message || 'Something went wrong');
+        toast.error(data.message || 'Something went wrong') 
+        setLoading(false)
       }
 
       localStorage.setItem('otpEmail', email);
@@ -81,6 +81,7 @@ const RegistrationForm = () => {
 
       if (!res.ok) {
         toast.error("OTP Error: " + data.message)
+        setLoading(false)
         return;
       }
 
@@ -145,6 +146,7 @@ const RegistrationForm = () => {
 
       if (!res.ok) {
         toast.error(data.message || 'Registration failed')
+        setLoading(false)
         return;
       }
 
